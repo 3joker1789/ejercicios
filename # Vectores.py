@@ -1,5 +1,5 @@
 # Vectores
-a = [1, 2, 3]
+a = [56, 2, 3]
 b = [-1, 0, 2]
 
 # Calcular el producto escalar
