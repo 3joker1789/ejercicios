@@ -1,0 +1,5 @@
+R:\estructura de datos\Ejercicios\obj\Debug\net9.0\Ejercicios.GeneratedMSBuildEditorConfig.editorconfig
+R:\estructura de datos\Ejercicios\obj\Debug\net9.0\Ejercicios.AssemblyInfoInputs.cache
+R:\estructura de datos\Ejercicios\obj\Debug\net9.0\Ejercicios.AssemblyInfo.cs
+R:\estructura de datos\Ejercicios\obj\Debug\net9.0\Ejercicios.csproj.CoreCompileInputs.cache
+R:\estructura de datos\Ejercicios\obj\Debug\net9.0\Ejercicios.sourcelink.json
