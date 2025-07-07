@@ -1,96 +1,141 @@
 using System;
+using System.Collections.Generic;
 
-class Node
+class Nodo
 {
-    public int Data;
-    public Node Next;
+    public int Dato;
+    public Nodo Siguiente;
+
+    public Nodo(int dato)
+    {
+        Dato = dato;
+        Siguiente = null;
+    }
 }
 
-class LinkedList
+class ListaEnlazada
 {
-    private Node head;
-    private int count;
+    public Nodo Cabeza;
+    public int Contador;
 
-    public void InsertAtEnd(int data)
+    public void InsertarInicio(int dato)
     {
-        Node newNode = new Node { Data = data };
-        if (head == null) head = newNode;
+        Nodo nuevo = new Nodo(dato);
+        nuevo.Siguiente = Cabeza;
+        Cabeza = nuevo;
+        Contador++;
+    }
+
+    public void InsertarFinal(int dato)
+    {
+        Nodo nuevo = new Nodo(dato);
+        if (Cabeza == null)
+        {
+            Cabeza = nuevo;
+        }
         else
         {
-            Node current = head;
-            while (current.Next != null) current = current.Next;
-            current.Next = newNode;
+            Nodo actual = Cabeza;
+            while (actual.Siguiente != null)
+            {
+                actual = actual.Siguiente;
+            }
+            actual.Siguiente = nuevo;
         }
-        count++;
+        Contador++;
     }
 
-    public void InsertAtBeginning(int data)
+    public List<int> ObtenerElementos()
     {
-        Node newNode = new Node { Data = data, Next = head };
-        head = newNode;
-        count++;
-    }
-
-    public int Count() => count;
-
-    public void Display()
-    {
-        Node current = head;
-        while (current != null)
+        List<int> elementos = new List<int>();
+        Nodo actual = Cabeza;
+        while (actual != null)
         {
-            Console.Write(current.Data + " ");
-            current = current.Next;
+            elementos.Add(actual.Dato);
+            actual = actual.Siguiente;
         }
-        Console.WriteLine();
+        return elementos;
     }
 }
 
 class Program
 {
-    static bool IsPrime(int n)
+    static bool EsPrimo(int numero)
     {
-        if (n < 2) return false;
-        for (int i = 2; i <= Math.Sqrt(n); i++)
-            if (n % i == 0) return false;
+        if (numero < 2) return false;
+        for (int i = 2; i <= Math.Sqrt(numero); i++)
+        {
+            if (numero % i == 0) return false;
+        }
         return true;
     }
 
-    static bool IsArmstrong(int n)
+    static bool EsArmstrong(int numero)
     {
-        int sum = 0, temp = n, digits = n.ToString().Length;
-        while (temp > 0)
+        int original = numero;
+        int suma = 0;
+        int digitos = numero.ToString().Length;
+
+        while (numero > 0)
         {
-            sum += (int)Math.Pow(temp % 10, digits);
-            temp /= 10;
+            int digito = numero % 10;
+            suma += (int)Math.Pow(digito, digitos);
+            numero /= 10;
         }
-        return sum == n;
+
+        return suma == original;
     }
 
-    static void Main()
+    static void Main(string[] args)
     {
-        LinkedList primes = new LinkedList();
-        LinkedList armstrongs = new LinkedList();
-        Random rand = new Random();
+        ListaEnlazada listaPrimos = new ListaEnlazada();
+        ListaEnlazada listaArmstrong = new ListaEnlazada();
 
-        for (int i = 0; i < 50; i++)
+        Console.WriteLine("Ingrese números enteros (uno por línea). Ingrese -1 para terminar:");
+
+        while (true)
         {
-            int num = rand.Next(1, 1000);
-            if (IsPrime(num)) primes.InsertAtEnd(num);
-            if (IsArmstrong(num)) armstrongs.InsertAtBeginning(num);
+            Console.Write("Número: ");
+            string entrada = Console.ReadLine();
+            if (!int.TryParse(entrada, out int numero))
+            {
+                Console.WriteLine("Entrada inválida. Intente de nuevo.");
+                continue;
+            }
+
+            if (numero == -1)
+                break;
+
+            if (EsPrimo(numero))
+            {
+                listaPrimos.InsertarFinal(numero);
+            }
+
+            if (EsArmstrong(numero))
+            {
+                listaArmstrong.InsertarInicio(numero);
+            }
         }
 
-        // Resultados
-        Console.WriteLine($"Primos: {primes.Count()} elementos");
-        Console.WriteLine($"Armstrong: {armstrongs.Count()} elementos");
-        
-        if (primes.Count() > armstrongs.Count()) 
-            Console.WriteLine("Más elementos en lista de primos");
-        else if (primes.Count() < armstrongs.Count()) 
-            Console.WriteLine("Más elementos en lista de Armstrong");
-        else 
-            Console.WriteLine("Ambas listas tienen igual cantidad");
+        // Mostrar resultados
+        Console.WriteLine($"\na. Cantidad de primos: {listaPrimos.Contador}");
+        Console.WriteLine($"   Cantidad de Armstrong: {listaArmstrong.Contador}");
 
-        Console.Write("Primos: "); primes.Display();
-        Console.Write("Armstrong: "); armstrongs.Display();
+        if (listaPrimos.Contador > listaArmstrong.Contador)
+            Console.WriteLine("b. La lista de números primos tiene más elementos.");
+        else if (listaArmstrong.Contador > listaPrimos.Contador)
+            Console.WriteLine("b. La lista de números Armstrong tiene más elementos.");
+        else
+            Console.WriteLine("b. Ambas listas tienen la misma cantidad de elementos.");
+
+        Console.WriteLine("c. Lista de números primos:");
+        foreach (int num in listaPrimos.ObtenerElementos())
+            Console.Write(num + " ");
+
+        Console.WriteLine("\n   Lista de números Armstrong:");
+        foreach (int num in listaArmstrong.ObtenerElementos())
+            Console.Write(num + " ");
+
+        Console.WriteLine("\nFin del programa.");
     }
 }
